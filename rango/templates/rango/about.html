@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Rango</title>
+</head>
+<body>
+    <h1>Rango says....</h1>
+    <div>
+        <p>Welcome this is the Rango's about page</p>
+        <strong>{{ aboutmessage }}</strong>
+    </div>
+    <div>
+        <a href="{% url 'rango:index' %}">Index</a>
+        <img src="{% static 'images/rango.png' %}" alt="Rango image"> <br/>
+        <img src="{% get_media_prefix %}rango2.png" alt="Rango2 image"> <br/>
+        <img src="{{ MEDIA_URL }}rango3.png" alt="Rango3 image">
+
+    </div>
+    
+</body>
+</html>
