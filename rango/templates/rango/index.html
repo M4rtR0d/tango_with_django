@@ -1,12 +1,11 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rango</title>
-</head>
-<body>
+
+{% block title_block %}
+Homepage
+{% endblock title_block %}
+
+{% block body_block %}
     <h1>Rango says...</h1>
     <div>
         hey there partner! <br/>
@@ -19,7 +18,7 @@
             {% for category in categories %}
             <li>
                 <!-- The following line is changed to add an HTML hyperlink -->
-                <a href="/rango/category/{{ category.slug }}">{{ category.name }}</a>
+                <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -51,5 +50,4 @@
         <a href="/rango/add_category/">Add a New Category</a> <br/>
     </div>
     
-</body>
-</html>
+{% endblock body_block %}
