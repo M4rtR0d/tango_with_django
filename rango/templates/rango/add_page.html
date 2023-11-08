@@ -2,13 +2,13 @@
 {% load static %}
 
 {% block title_block %}
-<Strong>Rango, add_page</Strong>
+Add a page
 {% endblock title_block %}
 
 {% block body_block %}
 <h1>Add a page to {{ category.name }}</h1>
     <div>
-        <form id="add_page_form" method="post" action="/rango/category/{{ category.slug }}/add_page/">
+        <form id="add_page_form" method="post" action="{% url 'rango:add_page' category.slug %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
