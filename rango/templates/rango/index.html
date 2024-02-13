@@ -8,7 +8,12 @@ Homepage
 {% block body_block %}
     <h1>Rango says...</h1>
     <div>
-        hey there partner! <br/>
+        {% if user.is_authenticated %}
+            howdy {{ user.username }}!
+        {% else %} 
+            hey there partner!
+        {% endif %}
+        <br/>
         <strong>{{ aboldmessage }}</strong><br/>
     </div>
     <div>
@@ -49,5 +54,6 @@ Homepage
         <a href="{% url 'rango:about' %}">About</a><br/>
         <a href="/rango/add_category/">Add a New Category</a> <br/>
     </div>
-    
+
+        
 {% endblock body_block %}
