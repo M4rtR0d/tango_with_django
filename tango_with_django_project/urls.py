@@ -26,4 +26,10 @@ urlpatterns = [
     path('rango/', include('rango.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
+    path('accounts/login/', include('registration.backends.simple.urls')),
+    path('accounts/logout/', include('registration.backends.simple.urls')),
+    path('accounts/register/', include('registration.backends.simple.urls')),
+    path('accounts/register/closed/', include('registration.backends.simple.urls')),
+    path('accounts/password/change/', include('registration.backends.simple.urls')),
+    path('accounts/password/change/done/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

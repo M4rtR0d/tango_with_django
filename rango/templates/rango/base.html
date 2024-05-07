@@ -2,47 +2,144 @@
 {% load static %}
 {% load rango_template_tags %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author"
+          content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
     <title>
-        Rango -
-        {% block title_block %}
-            How to Tango with Django!
-        {% endblock title_block %}
+      {% block title_block %}How to Tango with Django!{% endblock %}
     </title>
-</head>
-<body>
-    <div>
-        {% block body_block %} 
-        {% endblock body_block %}
-    </div>
-    <div>
-        {% block sidebar_block %}
-            {% get_category_list category %}
-        {% endblock %}
-    </div>
-    <hr>
-    <div>
-        <ul>
+    <link rel="canonical"
+          href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+    <!--link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"-->
+    <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <!-- Favicons -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <meta name="theme-color" content="#712cf9">
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.comddocs/5.3/dashboard.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6"
+         href="{% url 'rango:index' %}">Rango</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#sidebarMenu"
+              aria-controls="sidebarMenu"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+          <ul>
             {% if user.is_authenticated %}
-                <!-- Show these links when the user is logged in -->
-                <li><a href="{% url 'rango:restricted' %}">Restricted Page</a></li>
-                <li><a href="{% url 'auth_logout' %}?next={% url 'rango:index'%}">Logout</a></li>
-                <li><a href="{% url 'auth_password_change' %}">Password change</a></li>
-                <li><a href="{% url 'auth_password_change_done' %}">Change complete</a></li>    
-                <li><a href="{% url 'rango:add_category' %}">Add New Category</a></li>
+              <!-- Show these links when the user is logged in -->
+              <a href="{% url 'auth_logout' %}?next={% url 'rango:index' %}">Logout</a>
             {% else %}
-                <!-- Show these links when the user is NOT logged in -->
-                <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
-                <li><a href="{% url 'auth_login' %}">Login</a></li>
-
+              <!-- Show these links when the user is NOT logged in -->
+              <a href="{% url 'registration_register' %}">Sign Up</a>
+              <a href="{% url 'auth_login' %}">Login</a>
             {% endif %}
-                <!-- Outside the conditional statements, ALWAYS show -->
-                <li><a href="{% url 'rango:about' %}">About</a></li>
-                <li><a href="{% url 'rango:index' %}">Index</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu"
+             class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="position-sticky pt-3 sidebar-sticky">
+            
+            {% block sidebar_block %}
+              <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% get_category_list category %}">
+                    <span data-feather="file-text" class="align-text-bottom"></span>
+                  </a>
+                </li>
+              </ul>
+            {% endblock %}
+            <!--
+        <ul class="nav flex-column">
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">
+              <span data-feather="home" class="align-text-bottom"></span>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file" class="align-text-bottom"></span>
+              Orders
+            </a>
+          </li>
         </ul>
+  -->
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+              <span>Links</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'rango:add_category' %}">
+                  <span data-feather="file-text" class="align-text-bottom"></span>
+                  Add New Category
+                </a>
+              </li>
+              {% if user.is_authenticated %}
+                <!-- Show these links when the user is logged in -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'rango:restricted' %}">
+                    <span data-feather="file-text" class="align-text-bottom"></span>
+                    Restricted Page
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'auth_password_change' %}">
+                    <span data-feather="file-text" class="align-text-bottom"></span>
+                  Change Password</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'rango:about' %}">
+                    <span data-feather="file-text" class="align-text-bottom"></span>
+                  About</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <!--        <h1 class="h2">Dashboard</h1>  -->
+            {% block body_block %}{% endblock %}
+          </div>
+        </main>
+      </div>
     </div>
-    
-</body>
+    <footer>
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+      <p>&copy; 2023 Tango With Django 4 &middot;</p>
+    </footer>
+    <!--script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script -->
+    <!--script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"></script -->
+    <!--script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script -->
+    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://getbootstrap.com/dashboard.js"></script>
+  </body>
 </html>
