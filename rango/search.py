@@ -11,7 +11,7 @@ def main():
         "engine": "duckduckgo",
         "q": "Tango With Django",
         "cc": "US",
-        "api_key": "cbf16a041c65f9364962b50065c79d2557844ac486127f06e4fc84008ccf4d24"
+        "api_key": "API_KEY"
         }
     response = run_search(params)
     #print(response)
