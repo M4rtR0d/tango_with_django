@@ -11,6 +11,7 @@ from datetime import datetime
 import json
 from serpapi import GoogleSearch
 from rango.search import run_query
+from registration.backends.simple.views import RegistrationView
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
@@ -76,7 +77,7 @@ def show_category(request, category_name_slug):
 
         # Retrieve all of the associated pages.
         # The filter() will return a list of page objects or an empty list.
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
@@ -92,6 +93,16 @@ def show_category(request, category_name_slug):
         # the template will display the "no category" message for us.
         context_dict['category'] = None
         context_dict['pages'] = None
+
+     # Start new search functionality code.
+    context_dict['query'] = 'search'
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+            
+        if query:
+            context_dict['result_list'] = run_query(query)
+            context_dict['query'] = query
+	# End new search functionality code.
     
     return render(request, 'rango/category.html', context=context_dict)
 
@@ -199,6 +210,7 @@ def visitor_cookie_handler(request):
     # return response
     request.session['visits'] = visits
 
+'''
 def search(request):
     result_list = []
     query = ''
@@ -211,3 +223,35 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'rango/search.html', {'query':query, 'result_list': result_list})
+'''
+    
+def goto_url(request):
+    if request.method == 'GET':
+        page_id = request.GET.get('page_id')
+        try:
+            selected_page = Page.objects.get(id=page_id)
+            selected_page.views = selected_page.views + 1
+            selected_page.save()
+            return redirect(selected_page.url)
+        except Page.DoesNotExist:
+            return redirect(reverse('rango:index'))
+    return redirect(reverse('rango:index'))
+
+@login_required
+def register_profile(request):
+    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return redirect(reverse('rango:index'))
+        else:
+            print(form.errors)
+    context_dict = {'form': form}
+    return render(request, 'rango/profile_registration.html', context_dict)
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self, user):
+        return reverse('rango:register_profile')
